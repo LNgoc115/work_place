@@ -1,1 +1,3 @@
 	http://www.vogella.com/tutorials/EclipseProductDeployment/article.html
+	http://www.ralfebert.de/archive/eclipse_rcp/rcp_addressbook/
+		http://www.ralfebert.de/archive/eclipse_rcp/
