@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="ZoonDAO" name="ZoonDAO"
+		class="com.viettel.ipcc.agentserver.dao.ZoonDAO">
+	</bean>
+
+	<bean id="AgentsDAO" name="AgentsDAO"
+		class="com.viettel.ipcc.agentserver.dao.AgentsDAO">
+
+	</bean>
+
+	<bean id="ShiftsDAO" name="ShiftsDAO"
+		class="com.viettel.ipcc.agentserver.dao.ShiftsDAO">
+
+	</bean>
+
+	<bean id="OmapCdrSender" name="OmapCdrSender"
+		class="com.viettel.ipcc.agentserver.listener.sems.OmapCdrSender">
+		<property name="queuename" value="QUEUE4CDR"></property>
+		<property name="brokerUrl" value="tcp://172.18.15.4:61616"></property>
+		
+	</bean>
+	<bean id="AgentDesktopRequestManager" name="AgentDesktopRequestManager"
+		class="com.viettel.ipcc.agentserver.listener.agent.AgentDesktopRequestManager">
+		<property name="numThread">
+			<value type="int">2</value>
+		</property>
+		<property name="timeSleep">
+			<value type="long">100</value>
+		</property>
+		<property name="processor" ref="AgentDesktopRequestProcessor"></property>
+                <property name="monitoringBroadCastProcessor" ref="MonitoringBroadCastProcessor"></property>
+	</bean>
+        <bean id="MonitoringBroadCastProcessor" name="MonitoringBroadCastProcessor"
+		class="com.viettel.ipcc.agentserver.listener.agent.MonitoringBroadCastProcessor">
+	</bean>
+	<bean id="AgentDesktopRequestProcessor" name="AgentDesktopRequestProcessor"
+		class="com.viettel.ipcc.agentserver.listener.agent.AgentDesktopRequestProcessor">
+	</bean>
+	<bean id="AgentDesktopProtocolHandler" name="AgentDesktopProtocolHandler"
+		class="com.viettel.ipcc.agentserver.listener.agent.AgentDesktopProtocolHandler">
+	</bean>
+	<bean id="AgentServerListener" name="AgentServerListener"
+		class="com.viettel.ipcc.agentserver.listener.agent.AgentServerListener">
+		<property name="port">
+			<value type="int">4512</value>
+		</property>
+		<property name="handler" ref="AgentDesktopProtocolHandler"></property>
+	</bean>
+	<bean id="AcdServerRequestSender" name="AcdServerRequestSender"
+		class="com.viettel.ipcc.agentserver.listener.agent.AcdServerRequestSender">
+		<property name="updateUserStatusMethodName" value="AcdQueueServer.updateUserStatus"></property>
+		<property name="listAcdServerUrl" value="http://192.168.174.126:8081/;http://192.168.174.126:8083/"></property>
+	</bean>
+	<bean id="SemsCommandProcessorManager" name="SemsCommandProcessorManager"
+		class="com.viettel.ipcc.agentserver.listener.sems.SemsCommandProcessorManager">
+		<property name="numThread">
+			<value type="int">2</value>
+		</property>
+		<property name="delayTime">
+			<value type="long">50</value>
+		</property>
+	</bean>
+	<bean id="AgentsManager" name="AgentsManager"
+		class="com.viettel.ipcc.agentserver.manager.AgentsManager">
+		<property name="intervalCheckConnection">
+			<value type="long">30000</value>
+		</property>
+		<property name="numRetryPing">
+			<value type="int">3</value>
+		</property>
+		<property name="anonymousTimeout">
+			<value type="long">60000</value>
+		</property>
+		<property name="maxNumberRejectCall">
+			<value type="int">3</value>
+		</property> 
+
+                <property name="sqlSupervisorSearchAgent">
+			<value type="java.lang.String">
+				select a.agent_id from agents a  where not(a.user_status = 'LOGOUT' ) and (a.GROUP_NAME=:GROUP_NAME) and (a.login_type ='AGENT') and (:username='420394203948923849NOTCHECK' or a.vsa_user_login like :username )  and (:userstatus ='420394203948923849NOTCHECK' or a.user_status = :userstatus)  and (:callstatus='420394203948923849NOTCHECK' or a.call_status = :callstatus) and (:minute = -1292383 or  trunc(to_number(sysdate - (TO_DATE (TO_CHAR (a.last_change_status , 'YYYY-MON-DD HH24:MI:SS'),'YYYY-MON-DD HH24:MI:SS'))) * 1440) ##op :minute )
+			</value>
+		</property>
+
+		<property name="sqlShiftleaderSearchNotZoonID">
+			<value type="java.lang.String">
+				select a.agent_id from agents a  where not(a.user_status = 'LOGOUT' )  and (a.login_type ='AGENT') and (:username='420394203948923849NOTCHECK' or a.vsa_user_login like :username )  and (:userstatus ='420394203948923849NOTCHECK' or a.user_status = :userstatus)  and (:callstatus='420394203948923849NOTCHECK' or a.call_status = :callstatus) and (:minute = -1292383 or  trunc(to_number(sysdate - (TO_DATE (TO_CHAR (a.last_change_status , 'YYYY-MON-DD HH24:MI:SS'),'YYYY-MON-DD HH24:MI:SS'))) * 1440) ##op :minute )
+			</value>
+		</property>
+		
+		<property name="sqlShiftleaderSearch">
+			<value type="java.lang.String">
+				select a.agent_id from agents a, agent_zoon az where not(a.user_status = 'LOGOUT' )  and (a.login_type ='AGENT') and (a.agent_id = az.agent_id) and (az.zoon_id = :zoonid) and (:username='420394203948923849NOTCHECK' or a.vsa_user_login like :username )  and (:userstatus ='420394203948923849NOTCHECK' or a.user_status = :userstatus) and (:callstatus='420394203948923849NOTCHECK' or a.call_status = :callstatus) and (:minute = -1292383 or  trunc(to_number(sysdate - (TO_DATE (TO_CHAR (a.last_change_status , 'YYYY-MON-DD HH24:MI:SS'),'YYYY-MON-DD HH24:MI:SS'))) * 1440) ##op :minute  )
+			</value>
+		</property>
+                
+                <property name="monitoringMediaServer">
+			<value type="java.lang.String">http://172.18.15.4:15599/</value>
+		</property>
+		
+		
+	</bean>
+	<bean id="CallManager" name="CallManager"
+		class="com.viettel.ipcc.agentserver.manager.CallManager">
+		<property name="callTimeOut">
+			<value type="long">86400000</value>
+		</property>
+		<property name="checkCallInterval">
+			<value type="long">2000</value>
+		</property>
+	</bean>
+
+
+
+	<bean id="XmlrpcServer" class="org.mortbay.jetty.Server">
+		<property name="connectors">
+			<list>
+                                <bean class="org.mortbay.jetty.bio.SocketConnector">
+                                        <property name="port">
+                                                <value type="java.lang.Integer">8082</value>
+                                        </property>
+                                </bean>
+                        </list>
+
+		</property>
+	</bean>
+
+	<bean id="VsaDomain" name="VsaDomain" class="java.lang.String">
+		<constructor-arg index="0" type="java.lang.String">
+			<value type="java.lang.String">ipcc</value>
+		</constructor-arg>
+	</bean>
+	<bean id="VsaUrl" name="VsaUrl" class="java.lang.String">
+		<constructor-arg index="0" type="java.lang.String">
+			<!--<value type="java.lang.String">http://192.168.133.34:5676/passportv3/passportWS?wsdl</value>-->
+			<value type="java.lang.String">http://192.168.174.102:5676/passportv3/passportWS?wsdl</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="DbUpdater" name="DbUpdater"
+		class="com.viettel.ipcc.agentserver.dbupdater.DbUpdater" >
+		<property name="numThreadAgentUpdater">
+			<value type="int">2</value>
+		</property>
+		<property name="threadAgentUpdaterDelay">
+			<value type="long">100</value>
+		</property>
+		<property name="maxTimeInqueue">
+			    <value type="long">50</value>
+		</property>
+	</bean>
+
+
+	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter" lazy-init="false">
+		<property name="beans">
+			<map>
+				<entry key="bean:name=OmapCdrSenderBean" value-ref="OmapCdrSender" />
+				<entry key="bean:name=AgentDesktopRequestManagerBean" value-ref="AgentDesktopRequestManager" />
+				<entry key="bean:name=AgentServerListenerBean" value-ref="AgentServerListener" />
+				<entry key="bean:name=AcdServerRequestSenderBean" value-ref="AcdServerRequestSender" />
+				<entry key="bean:name=SemsCommandProcessorManagerBean" value-ref="SemsCommandProcessorManager" />
+				<entry key="bean:name=AgentsManagerBean" value-ref="AgentsManager" />
+				<entry key="bean:name=CallManagerBean" value-ref="CallManager" />
+				<entry key="bean:name=DbUpdaterBean" value-ref="DbUpdater" />
+			</map>
+		</property>
+	</bean>
+	<bean id="SceCommandProcessorManager"
+		name="SceCommandProcessorManager" class="com.viettel.ipcc.agentserver.listener.sce.SceCommandProcessorManager">
+		<property name="numThread" value="2"></property>
+		<property name="delayTime" value="100"></property>
+	</bean>
+</beans>
+
