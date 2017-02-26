@@ -12,63 +12,61 @@ public class Main {
 //		viewResult("" + 121314 + "," + 31212 + ":" + greatestCommonDivisorRecursive(121314, 31212)) ;
 
 //		viewResult("1000: " + greatestIntergerLessThanLogN(1000.7));
-        int[] testArray = new int[]{121, 41, 323, 2, 23, 2, 42, 4, 2, 5, 325, 2};
+        int[] testArray = new int[]{1, 12, 5, 26, 7, 6, 3, 7, 2};
 //		int[] sortedArray = bubleSortArray (testArray);
-        quickSort(testArray, 0, testArray.length);
+        quickSort(testArray, 0, testArray.length - 1);
+        viewResult(toString(testArray));
 
 //        int flagP = partition(testArray, 0, testArray.length);
-        for (int i : testArray) {
-            viewResult("" + i);
-        }
 
     }
     
     public static void quickSort(int[] arr, int l, int r) {
-        if (l < r) {
+        if (l < r && !isStop(arr,l,r)) {
             int i = partition (arr, l, r);
-            quickSort (arr, l, i - 1);
-            quickSort(arr, i+1, r);
+            quickSort (arr, l, i);
+            quickSort(arr, i + 1, r);
         }
+    }
+    
+    public static boolean isStop(int[] arr, int l, int r) {
+    	if (arr != null && (r - l == 1) && arr[l] <= arr[r]) return true;
+    	return false;
     }
 
     /**
      *
      * @param arr
-     * @param f
+     * @param l
      * @param r
-     * @return flag position which all right position greater than flag position
-     * and all left position smaller than flag position
+     * @return pivot position which all right position greater than pivot position
+     * and all left position smaller than pivot position
      */
-    public static int partition(int[] arr, int f, int r) {
-        int flag = arr[r - 1];
-        int i = f;
-        int j = r - 2;
+    public static int partition(int[] arr, int l, int r) {
+        int pivot = arr[(l + r) / 2];
+        int i = l;
+        int j = r;
         int tmp;
-        while (i < j) {
-            while (arr[i] < flag) {
+        while (i <= j) {
+            while (arr[i] < pivot) {
                 i++;
             }
-            while (arr[j] > flag) {
+            while (arr[j] > pivot) {
                 j--;
             }
-            if (i < j) {
+            
+            if (i <= j) {
                 tmp = arr[i];
                 arr[i] = arr[j];
                 arr[j] = tmp;
                 i++;
                 j--;
             }
+            
+            viewResult("i = " + i);
+            viewResult("j = " + j);
+            printArray(arr, l, r);
 
-        }
-        //dao arr[j] voi arr[r]
-        try {
-            tmp = arr[j];
-            arr[j] = arr[r - 1];
-            arr[r - 1] = tmp;
-        } catch (Exception e) {
-            viewResult("j:" + j);
-            viewResult("i:" + i);
-            e.printStackTrace();
         }
         return j;
     }
@@ -213,8 +211,16 @@ public class Main {
      *
      * @param str
      */
-    static void viewResult(String str) {
-        System.out.println(str);
+    static void viewResult(Object obj) {
+        System.out.println(obj.toString());
+    }
+    
+    static void printArray(int[] arr, int l, int r) {
+    	StringBuffer str = new StringBuffer("");
+    	for (int i = l; i <= r; i ++) {
+    		str.append(i+";");
+    	}
+    	System.out.println(str.toString());
     }
 
 }
