@@ -8,17 +8,115 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-//		viewResult("" + 121314 + "," + 31212 + ":" + greatestCommonDivisor(121314, 31212)) ;
-//		viewResult("" + 121314 + "," + 31212 + ":" + greatestCommonDivisorRecursive(121314, 31212)) ;
 
-//		viewResult("1000: " + greatestIntergerLessThanLogN(1000.7));
-        int[] testArray = new int[]{1, 12, 5, 26, 7, 6, 3, 7, 2};
-//		int[] sortedArray = bubleSortArray (testArray);
-        quickSort(testArray, 0, testArray.length - 1);
-        viewResult(toString(testArray));
+//        int[] testArray = new int[]{1, 12, 5, 26, 7, 6, 3, 7, 2};
+//        quickSort(testArray, 0, testArray.length - 1);
+//        viewResult(toString(testArray));
 
-//        int flagP = partition(testArray, 0, testArray.length);
-
+            String str = "012345126";
+//            System.out.println(str.replace("1", "x"));
+            System.out.println(replaceUseRecursion(str,'1','x'));
+            
+    }
+ 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
+     * 
+     * @param str
+     * @param oldCh
+     * @param newCh
+     * @return 
+     */
+    public static String replaceUseIteration(String str, char oldCh, char newCh) {
+        if (null == str || str.isEmpty()) return str;
+        char[] carr = str.toCharArray();
+        for (int i = 0; i < carr.length; i++) {
+            if (carr[i] == oldCh) carr[i] = newCh;
+        }
+        return new String(carr);
+    }
+    
+    /**
+     * 
+     * @param str
+     * @param oldCh
+     * @param newCh
+     * @return 
+     */
+    public static String replaceUseRecursion(String str, char oldCh, char newCh) {
+        if (str == null || str.isEmpty()) return str;
+        if (oldCh == str.charAt(0)) {
+            return newCh + replaceUseRecursion(str.substring(1), oldCh, newCh);
+        } else {
+            return str.charAt(0) + replaceUseRecursion(str.substring(1), oldCh, newCh);
+        }
     }
     
     public static void quickSort(int[] arr, int l, int r) {
