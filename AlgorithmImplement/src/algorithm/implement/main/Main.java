@@ -12,124 +12,140 @@ public class Main {
 //        int[] testArray = new int[]{1, 12, 5, 26, 7, 6, 3, 7, 2};
 //        quickSort(testArray, 0, testArray.length - 1);
 //        viewResult(toString(testArray));
-
-            String str = "012345126";
+//            String str = "012345126";
 //            System.out.println(str.replace("1", "x"));
-            System.out.println(replaceUseRecursion(str,'1','x'));
-            
+//            System.out.println(replaceUseRecursion(str,'1','x'));
+//        int index = binarySearch(testArray, 3, 0, testArray.length - 1);
+//        System.out.println(index);
+        String str = "1321232233223212";
+        String pat = "2232";
+        int index = searchString(str, pat);
+        System.out.println(index);
+
     }
- 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     /**
-     * 
+     *
+     * @param str
+     * @param pat
+     * @return
+     */
+    public static int searchString(String str, String pat) {
+        if (str == null || pat == null || str.length() < pat.length()) {
+            return -1;
+        }
+        char[] strArr = str.toCharArray();
+        char[] patArr = pat.toCharArray();
+        int i = 0, j = 0;
+        int strLength = str.length();
+        int patLength = pat.length();
+        while (i < strLength && j < patLength) {
+            if (strArr[i] == patArr[j]) {
+                i++;
+                j++;
+            } else {
+                i = i - j + 1;
+                j = 0;
+            }
+        }
+        
+        throw new RuntimeException();
+
+//        if (j == (patLength)) {
+//            return (i - j);
+//        } else {
+//            return -1;
+//        }
+    }
+
+    /**
+     *
+     * @param arr
+     * @param key
+     * @param l
+     * @param r
+     * @return
+     */
+    public static int binarySearch(int[] arr, int key, int l, int r) {
+        if (null == arr || arr.length == 0) {
+            return -1;
+        }
+        if ((r - l) <= 1 && arr[l] != key && arr[r] != key) {
+            return -1;
+        }
+        if ((r - l) == 1 && arr[l] == key) {
+            return l;
+        }
+        if ((r - l) == 1 && arr[r] == key) {
+            return r;
+        }
+        if ((l - r) == 0 && arr[l] == key) {
+            return l;
+        }
+        int pivot = (l + r) / 2;
+        if (key == arr[pivot]) {
+            return pivot;
+        }
+        if (key < arr[pivot]) {
+            return binarySearch(arr, key, l, pivot - 1);
+        }
+        if (key > arr[pivot]) {
+            return binarySearch(arr, key, pivot + 1, r);
+        }
+        return -1;
+    }
+
+    /**
+     *
      * @param str
      * @param oldCh
      * @param newCh
-     * @return 
+     * @return
      */
     public static String replaceUseIteration(String str, char oldCh, char newCh) {
-        if (null == str || str.isEmpty()) return str;
+        if (null == str || str.isEmpty()) {
+            return str;
+        }
         char[] carr = str.toCharArray();
         for (int i = 0; i < carr.length; i++) {
-            if (carr[i] == oldCh) carr[i] = newCh;
+            if (carr[i] == oldCh) {
+                carr[i] = newCh;
+            }
         }
         return new String(carr);
     }
-    
+
     /**
-     * 
+     *
      * @param str
      * @param oldCh
      * @param newCh
-     * @return 
+     * @return
      */
     public static String replaceUseRecursion(String str, char oldCh, char newCh) {
-        if (str == null || str.isEmpty()) return str;
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
         if (oldCh == str.charAt(0)) {
             return newCh + replaceUseRecursion(str.substring(1), oldCh, newCh);
         } else {
             return str.charAt(0) + replaceUseRecursion(str.substring(1), oldCh, newCh);
         }
     }
-    
+
     public static void quickSort(int[] arr, int l, int r) {
-        if (l < r && !isStop(arr,l,r)) {
-            int i = partition (arr, l, r);
-            quickSort (arr, l, i);
+        if (l < r && !isStop(arr, l, r)) {
+            int i = partition(arr, l, r);
+            quickSort(arr, l, i);
             quickSort(arr, i + 1, r);
         }
     }
-    
+
     public static boolean isStop(int[] arr, int l, int r) {
-    	if (arr != null && (r - l == 1) && arr[l] <= arr[r]) return true;
-    	return false;
+        if (arr != null && (r - l == 1) && arr[l] <= arr[r]) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -137,8 +153,8 @@ public class Main {
      * @param arr
      * @param l
      * @param r
-     * @return pivot position which all right position greater than pivot position
-     * and all left position smaller than pivot position
+     * @return pivot position which all right position greater than pivot
+     * position and all left position smaller than pivot position
      */
     public static int partition(int[] arr, int l, int r) {
         int pivot = arr[(l + r) / 2];
@@ -152,7 +168,7 @@ public class Main {
             while (arr[j] > pivot) {
                 j--;
             }
-            
+
             if (i <= j) {
                 tmp = arr[i];
                 arr[i] = arr[j];
@@ -160,7 +176,7 @@ public class Main {
                 i++;
                 j--;
             }
-            
+
             viewResult("i = " + i);
             viewResult("j = " + j);
             printArray(arr, l, r);
@@ -312,13 +328,13 @@ public class Main {
     static void viewResult(Object obj) {
         System.out.println(obj.toString());
     }
-    
+
     static void printArray(int[] arr, int l, int r) {
-    	StringBuffer str = new StringBuffer("");
-    	for (int i = l; i <= r; i ++) {
-    		str.append(i+";");
-    	}
-    	System.out.println(str.toString());
+        StringBuffer str = new StringBuffer("");
+        for (int i = l; i <= r; i++) {
+            str.append(i + ";");
+        }
+        System.out.println(str.toString());
     }
 
 }
