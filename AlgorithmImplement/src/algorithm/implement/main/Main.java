@@ -48,12 +48,14 @@ public class Main {
                 j = 0;
             }
         }
+        
+        throw new RuntimeException();
 
-        if (j == (patLength)) {
-            return (i - j);
-        } else {
-            return -1;
-        }
+//        if (j == (patLength)) {
+//            return (i - j);
+//        } else {
+//            return -1;
+//        }
     }
 
     /**
