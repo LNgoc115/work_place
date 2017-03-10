@@ -1,3 +1,20 @@
-http://www.java67.com/2012/08/10-java-coding-interview-questions-and.html
-http://javarevisited.blogspot.com/2014/07/9-difference-between-tcp-and-udp-protocol.html
-http://javarevisited.blogspot.sg/2010/10/basic-networking-commands-in-linuxunix.html
+Studying
+https://www.edx.org/course/uml-class-diagrams-software-engineering-kuleuvenx-umlx
+https://www.coursera.org/
+http://novoed.com/
+https://www.udacity.com/
+https://www.udemy.com/
+https://www.khanacademy.org/
+http://www.academicearth.org/
+
+
+Practise code
+http://codingbat.com
+https://projecteuler.net/
+https://www.hackerearth.com
+
+Social
+https://www.quora.com/
+
+How to become data science
+https://www.quora.com/How-can-I-become-a-data-scientist-1
