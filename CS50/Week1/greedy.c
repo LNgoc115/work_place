@@ -9,6 +9,8 @@ int convert_to_int(float f);
 
 int get_minimum_coins(int change_money);
 
+int get_minimum_coins_v2(int change_money);
+
 float get_positive_float();
 
 int convert_change_money_to_int(float change_money);
@@ -23,12 +25,16 @@ void greedy() {
 	
 	//get change money from console
 	float chg_money = get_change_money();
+	printf("change_money : %f\n", chg_money);
 	//convert change money to int
 	int in_chg_money = convert_change_money_to_int(chg_money);
+	printf("in_chg_money : %i\n", in_chg_money );
 	//get the minimum number of coins
-	int number_coins = get_minimum_coins(in_chg_money);
+	//int number_coins = get_minimum_coins(in_chg_money);
+	int number_coins_v2 = get_minimum_coins_v2(in_chg_money);
 	//print result
-	printf("Minimum coins: %i", number_coins);
+	//printf("Minimum coins: %i\n", number_coins);
+	printf("Minimum coins: %i",number_coins_v2 );
 	
 }
 
@@ -57,6 +63,23 @@ int get_minimum_coins(int change_money) {
 	// get remain value after minus the nearest number of change money. Exg: change_money: 35 --> nearest: 25 --> remain : 10
 	int remain = change_money - nearest_number;
 	return 1 + get_minimum_coins(remain);
+}
+
+int get_minimum_coins_v2(int change_money) {
+	if (change_money <= 0) return 0;
+	int remain = change_money;
+	int nearest = 0;
+	int count = 0;
+	do {
+		//get nearest coin number
+		nearest = get_nearest_number(remain);
+		//get remain after minus nearest coin number
+		remain -= nearest;
+		//count + 1
+		count++;
+		// stop when remain = 0
+	} while (remain > 0);
+	return count;
 }
 
 int convert_to_int(float f) {
